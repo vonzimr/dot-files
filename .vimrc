@@ -1,31 +1,26 @@
 " Specify a directory for plugins (for Neovim: ~/.local/share/nvim/plugged)
 call plug#begin('~/.vim/plugged')
-
 " Make sure you use single quotes
-
-" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-Plug 'moll/vim-node'
-Plug 'tpope/vim-fugitive'
-Plug 'altercation/vim-colors-solarized'
-Plug 'plasticboy/vim-markdown'
-Plug 'garbas/vim-snipmate'
-Plug 'SirVer/ultisnips'
-Plug 'isRuslan/vim-es6'
-Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'junegunn/seoul256.vim'
-Plug 'vim-javascript'
-Plug 'lepture/vim-jinja'
-Plug 'scrooloose/nerdtree'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'walm/jshint.vim'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'Valloric/YouCompleteMe'
-Plug 'ternjs/tern_for_vim'
-Plug 'vim-syntastic/syntastic'
-" Initialize plugin system
+Plug 'Shougo/vinarise.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'lervag/vimtex'
+Plug 'python-mode/python-mode'
+Plug 'honza/vim-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'davidhalter/jedi-vim'
+Plug 'a-watson/vim-gdscript'
+Plug 'igankevich/mesonic'
+Plug 'joonty/vdebug'
+Plug 'lumiliet/vim-twig'
+Plug 'ivanov/vim-ipython'
+Plug 'jpalardy/vim-slime'
 call plug#end()
 
+"Better management of Swap files
+set directory=$HOME/.vim/swapfiles//
 
 " Don't try to be vi compatible
 set nocompatible
@@ -37,8 +32,7 @@ syntax on
 " For plugins to load correctly
 filetype plugin indent on
 
-" TODO: Pick a leader key
-" let mapleader = ","
+let mapleader = ","
 
 " Security
 set modelines=0
@@ -67,6 +61,7 @@ set noshiftround
 set autoindent
 set smartindent
 set cindent
+
 " Cursor motion
 set scrolloff=3
 set backspace=indent,eol,start
@@ -95,24 +90,6 @@ set incsearch
 set ignorecase
 set smartcase
 set showmatch
-map <leader><space> :let @/=''<cr> " clear search
-
-" Remap help key.
-inoremap <F1> <ESC>:set invfullscreen<CR>a
-nnoremap <F1> :set invfullscreen<CR>
-vnoremap <F1> :set invfullscreen<CR>
-
-" Textmate holdouts
-
-" Formatting
-map <leader>q gqip
-
-" Visualize tabs and newlines
-set listchars=tab:▸\ ,eol:¬
-" Uncomment this to enable by default:
-" set list " To enable by default
-" Or use your leader key + l to toggle on/off
-map <leader>l :set list!<CR> " Toggle tabs and EOL
 
 " Color scheme (terminal)
 syntax enable
@@ -120,10 +97,7 @@ set background=dark
 let g:seoul256_background=234
 colorscheme seoul256
 
-"Jinja template syntax
-au BufNewFile,BufRead *.html,*.htm,*.shtml,*.stm,*.nunjuks,*.njk set ft=jinja
-
-map <C-k> :NERDTreeToggle<CR>
+map <C-k> :NERDTreeToggle %<CR>
 
 " Buffers
 set hidden
@@ -132,7 +106,6 @@ nnoremap <C-P> :bprev<CR>
 
 
 "Vim Airline
-
 "Tabs
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
@@ -144,4 +117,44 @@ let g:airline_theme='lucius'
 
 
 "Syntastic
-let g:syntastic_javascript_checkers = ['jshint']
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+"
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+"let g:syntastic_c_checkers=['gcc']
+"let g:syntastic_tex_checkers=['chktex']
+""AVR
+"let g:ycm_show_diagnostics_ui = 0
+"let g:syntastic_cpp_checkers=['cpp']
+"let g:syntastic_cpp_clang_check_post_args = ""
+
+fun! ReadMan()
+  " Assign current word under cursor to a script variable:
+  let s:man_word = expand('<cword>')
+  " Open a new window:
+  :exe ":wincmd n"
+  " Read in the manpage for man_word (col -b is for formatting):
+  :exe ":r!man " . s:man_word . " | col -b"
+  " Goto first line...
+  :exe ":goto"
+  " and delete it:
+  :exe ":delete"
+endfun
+" Map the K key to the ReadMan function:
+map K :call ReadMan()<CR>
+
+"SLIME
+let g:slime_target = "tmux"
+let g:slime_python_ipython = 1
+
+"Python-mode
+let g:pymode_breakpoint = 1
+let g:pymode_breakpoint_bind = '<leader>b'
+let g:pymode_lint = 1
+let g:pymode_lint_on_write = 1
+let g:pymode_folding = 0
+let g:pymode_run_bind = '<leader>r'
